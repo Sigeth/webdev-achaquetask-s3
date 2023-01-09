@@ -28,7 +28,7 @@ function checkSignedIn(req, res, next) {
 
 app.get("/api/tasks", checkSignedIn, async (req, res, next) => {
     try {
-        const tasks = await getTasks(req.query.filter);
+        const tasks = await getTasks();
         res.status(200).json(tasks);
     } catch (e) {
         console.error(e);
@@ -50,7 +50,8 @@ app.post("/api/task", async (req, res, next) => {
     try {
         const task = {
             title: req.body.title,
-            finished: req.body.finished
+            finished: req.body.finished,
+            status: req.body.status
         };
         await insertNewTask(task);
 
