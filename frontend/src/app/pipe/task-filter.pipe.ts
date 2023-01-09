@@ -10,15 +10,7 @@ export class TaskFilterPipe implements PipeTransform {
     if (!value) {
       return value;
     }
-
-    switch(filter) {
-      case "todo":
-        return value.filter(t => !t.finished);
-      case "finished":
-        return value.filter(t => t.finished);
-      default:
-        return value;
-    }
+    return value.filter(t => t.status == filter);
   }
 
 }
