@@ -13,7 +13,7 @@ export class TaskListComponent implements OnInit {
 
   newTask: Task = {
     title: '',
-    finished: false
+    status: this.status
   };
 
   error: boolean = false;
@@ -21,7 +21,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskService.getTasks().subscribe({
-      next: (data) => { this.tasks = data; },
+      next: (data) => { this.tasks = data; this.newTask.status = this.status },
       error: () => { this.error = true; }
     });
   }
@@ -43,14 +43,11 @@ export class TaskListComponent implements OnInit {
   update(task: Task): void {
     const modifiedTask: Task = {
       title: task.title,
-      finished: !task.finished
+      status: this.status
     };
     this.taskService.updateTask(task, modifiedTask).subscribe({
       next: () => { console.log("ok"); }
     });
   }
-
-
-
 
 }
