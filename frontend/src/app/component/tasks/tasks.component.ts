@@ -20,16 +20,6 @@ export class TasksComponent {
   error: boolean = false;
 
   constructor(private taskService: TasksService, private userService: UserService, private router: Router) { }
-/*  update(task: Task): void {
-    const modifiedTask: Task = {
-      title: task.title,
-      finished: !task.finished
-    };
-    this.taskService.updateTask(task, modifiedTask).subscribe({
-      next: () => { console.log("ok"); }
-    });
-  }
-*/
   logout(): void {
     this.userService.logout().subscribe({
       next: () => { this.router.navigate(["login"]); }

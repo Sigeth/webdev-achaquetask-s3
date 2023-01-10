@@ -13,6 +13,7 @@ export class TaskListComponent implements OnInit {
 
   newTask: Task = {
     title: '',
+    finished: false,
     status: this.status
   };
 
@@ -43,6 +44,7 @@ export class TaskListComponent implements OnInit {
   update(task: Task): void {
     const modifiedTask: Task = {
       title: task.title,
+      finished: !task.finished,
       status: this.status
     };
     this.taskService.updateTask(task, modifiedTask).subscribe({

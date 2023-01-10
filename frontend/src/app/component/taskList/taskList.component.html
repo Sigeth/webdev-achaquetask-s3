@@ -8,7 +8,8 @@
 <div class="d-flex justify-content-center">
     <div id="listeTaches" class="d-flex flex-column">
         <div class="d-flex justify-content-between m-1" *ngFor="let task of (tasks | taskFilter: status)">
-            <div>{{task.title}}</div>
+            <input type="checkbox" [(ngModel)]="task.finished" (click)="update(task)">
+            <div [ngClass]="task.finished ? 'text-decoration-line-through' : ''">{{task.title}}</div>
             <button class="btn btn-outline-danger m-1" (click)="delete(task)">Supprimer</button>
         </div>
     </div>
