@@ -8,13 +8,15 @@ import { AppRoutingModule } from "./app-routing-module";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { TaskFilterPipe } from './pipe/task-filter.pipe';
+import { TaskListComponent } from './component/taskList/taskList.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     TasksComponent,
-    TaskFilterPipe
+    TaskFilterPipe,
+    TaskListComponent
   ],
   imports: [
     BrowserModule,

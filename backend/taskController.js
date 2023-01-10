@@ -2,27 +2,11 @@ const { MongoClient, ObjectId } = require("mongodb");
 const dbUrl = "mongodb://127.0.0.1:27017";
 
 module.exports = {
-    async getTasks(filter) {
+    async getTasks() {
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db("tasks");
 
-        let effectiveFilter;
-        switch(filter) {
-            case 'all':
-                effectiveFilter = {};
-                break;
-            case 'todo':
-                effectiveFilter = { finished: false };
-                break;
-            case 'finished':
-                effectiveFilter = { finished: true };
-                break;
-            default:
-                effectiveFilter = {};
-                break;
-        }
-
-        return await dbo.collection("tasks").find(effectiveFilter).toArray();
+        return await dbo.collection("tasks").find().toArray();
     },
     async insertNewTask(task) {
         const db = await MongoClient.connect(dbUrl);
