@@ -8,7 +8,6 @@ import {TasksService} from "../../service/tasks.service";
 })
 export class TaskListComponent implements OnInit {
   @Input() status: string = "undefined";
-
   @Input() tasks: Array<Task> = new Array<Task>();
 
   newTask: Task = {
@@ -26,7 +25,11 @@ export class TaskListComponent implements OnInit {
 
   add(): void {
     this.taskService.addTask(this.newTask).subscribe({
-      next: (data) => { this.tasks.push(data); }
+      next: (data) => {
+        this.tasks.push(data);
+        this.newTask.title = '';
+        this.refreshTasks();
+      }
     });
   }
 
@@ -49,4 +52,7 @@ export class TaskListComponent implements OnInit {
     });
   }
 
+  private refreshTasks(): void {
+    this.tasks = this.tasks.filter(currentTask => currentTask._id == currentTask._id);
+  }
 }
