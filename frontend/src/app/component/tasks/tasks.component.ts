@@ -9,17 +9,25 @@ import {Router} from "@angular/router";
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css']
 })
-export class TasksComponent {
+export class TasksComponent implements OnInit{
 
   possibleStatus = [
-      "undefined",
-      "en_attente",
-      "en_cours",
-      "termine"
+    "undefined",
+    "en_attente",
+    "en_cours",
+    "termine"
   ]
+
+  tasks: Array<Task> = new Array<Task>()
   error: boolean = false;
 
   constructor(private taskService: TasksService, private userService: UserService, private router: Router) { }
+  ngOnInit(): void {
+    this.taskService.getTasks().subscribe({
+      next: (data) => { this.tasks = data; },
+      error: () => { this.error = true; }
+    });
+  }
   logout(): void {
     this.userService.logout().subscribe({
       next: () => { this.router.navigate(["login"]); }

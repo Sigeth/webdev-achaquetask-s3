@@ -9,7 +9,7 @@ import {TasksService} from "../../service/tasks.service";
 export class TaskListComponent implements OnInit {
   @Input() status: string = "undefined";
 
-  tasks: Array<Task> = new Array<Task>();
+  @Input() tasks: Array<Task> = new Array<Task>();
 
   newTask: Task = {
     title: '',
@@ -21,10 +21,7 @@ export class TaskListComponent implements OnInit {
   constructor(private taskService: TasksService) { }
 
   ngOnInit(): void {
-    this.taskService.getTasks().subscribe({
-      next: (data) => { this.tasks = data; this.newTask.status = this.status },
-      error: () => { this.error = true; }
-    });
+    this.newTask.status = this.status;
   }
 
   add(): void {
