@@ -5,8 +5,8 @@
       <button class="btn btn-outline-secondary m-1" (click)="logout()">Logout</button>
     </div>
     <div class="row">
-      <div class="col" *ngFor="let status of possibleStatus">
-        <taskList status="{{status}}" [tasks]="tasks"></taskList>
+      <div class="col" *ngFor="let list of taskList">
+        <taskList [list]=list></taskList>
       </div>
     </div>
   </div>

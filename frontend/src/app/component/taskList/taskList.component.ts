@@ -1,26 +1,30 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Task} from "../../model/task";
 import {TasksService} from "../../service/tasks.service";
+import {TaskList} from "../../model/taskList";
 @Component({
   selector: 'taskList',
   templateUrl: './taskList.component.html',
   styleUrls: ['./taskList.component.css']
 })
 export class TaskListComponent implements OnInit {
-  @Input() status: string = "undefined";
-  @Input() tasks: Array<Task> = new Array<Task>();
-
+  @Input() list: TaskList | undefined;
+  tasks: Array<Task> = new Array<Task>();
   newTask: Task = {
     title: '',
     finished: false,
-    status: this.status
+    status: "undefined",
+    listId: undefined
   };
 
   error: boolean = false;
   constructor(private taskService: TasksService) { }
 
   ngOnInit(): void {
-    this.newTask.status = this.status;
+    this.newTask.listId = this.list?._id;
+    this.taskService.getTasks(this.list?._id).subscribe({
+      next: (data) => { this.tasks = data; }
+    });
   }
 
   add(): void {
@@ -45,7 +49,8 @@ export class TaskListComponent implements OnInit {
     const modifiedTask: Task = {
       title: task.title,
       finished: !task.finished,
-      status: this.status
+      status: task.status,
+      listId: this.list?._id
     };
     this.taskService.updateTask(task, modifiedTask).subscribe({
       next: () => { console.log("ok"); }
