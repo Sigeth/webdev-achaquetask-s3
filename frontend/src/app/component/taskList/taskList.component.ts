@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Task} from "../../model/task";
 import {TasksService} from "../../service/tasks.service";
 import {TaskList} from "../../model/taskList";
+import {TaskListsService} from "../../service/lists.service";
 @Component({
   selector: 'taskList',
   templateUrl: './taskList.component.html',

@@ -52,6 +52,13 @@ export class TasksComponent implements OnInit{
       }
     })
   }
+
+  deleteList(list: TaskList) {
+    this.taskListsService.deleteList(list).subscribe({
+      next: () => { this.taskList = this.taskList.filter(currentList => currentList._id !== list._id) }
+    });
+  }
+
   logout(): void {
     this.userService.logout().subscribe({
       next: () => { this.router.navigate(["login"]); }

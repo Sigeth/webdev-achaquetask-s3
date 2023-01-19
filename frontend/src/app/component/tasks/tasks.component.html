@@ -4,14 +4,18 @@
       <h1>Taches</h1><br>
       <button class="btn btn-outline-secondary m-1" (click)="logout()">Logout</button>
     </div>
-    <div class="bd-highlight d-flex justify-content-center">
+    <div class="bd-highlight d-flex justify-content-center m-3">
       <div class="d-flex flex-row justify-content-center">
         <input id="inputAjoutList" class="saisieInput" type="text" name="tache" placeholder="Titre de la liste" [(ngModel)]="newList.title">
         <button id="buttonAjoutList" class="btn btn-primary" value="Ajouter" (click)="addTaskList()">Ajouter</button>
       </div>
     </div>
     <div class="row">
+      <hr>
       <div class="col" *ngFor="let list of taskList">
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-outline-danger m-1 d-flex" (click)="deleteList(list)">Supprimer la liste</button>
+        </div>
         <taskList [list]=list></taskList>
       </div>
     </div>

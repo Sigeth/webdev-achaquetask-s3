@@ -20,11 +20,11 @@ export class TaskListsService {
     return this.http.post<TaskList>(`${this.url}/list`, taskList, {withCredentials: true});
   }
 
-  updateTask(oldTaskList: TaskList, newTaskList: TaskList): Observable<void> {
-    return this.http.put<void>(`${this.url}/task/${oldTaskList._id}`, newTaskList, {withCredentials: true});
+  updateList(oldTaskList: TaskList, newTaskList: TaskList): Observable<void> {
+    return this.http.put<void>(`${this.url}/list/${oldTaskList._id}`, newTaskList, {withCredentials: true});
   }
 
-  deleteTask(taskList: TaskList): Observable<void> {
-    return this.http.delete<void>(`${this.url}/task/${taskList._id}`, {withCredentials: true});
+  deleteList(taskList: TaskList | undefined): Observable<void> {
+    return this.http.delete<void>(`${this.url}/list/${taskList?._id}`, {withCredentials: true});
   }
 }
