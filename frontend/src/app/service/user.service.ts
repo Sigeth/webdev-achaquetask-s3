@@ -11,6 +11,9 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  register(user: User) {
+    return this.http.post<void>(`${this.url}/register`, user, {withCredentials: true});
+  }
   login(user: User) {
     return this.http.post<void>(`${this.url}/login`, user, {withCredentials: true});
   }
