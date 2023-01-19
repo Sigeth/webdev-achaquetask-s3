@@ -51,7 +51,7 @@ export class TaskListComponent implements OnInit {
       title: task.title,
       finished: !task.finished,
       status: task.status,
-      listId: this.list?._id
+      listId: task.listId
     };
     this.taskService.updateTask(task, modifiedTask).subscribe({
       next: () => { console.log("ok"); }
