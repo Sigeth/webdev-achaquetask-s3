@@ -27,7 +27,7 @@ function checkSignedIn(req, res, next) {
 ##########################################
 */
 
-app.get("/api/tasks", async (req, res, next) => {
+app.get("/api/tasks", checkSignedIn, async (req, res, next) => {
     try {
         const tasks = await getTasks(req.query.listId);
         res.status(200).json(tasks);
@@ -37,7 +37,7 @@ app.get("/api/tasks", async (req, res, next) => {
     }
 });
 
-app.delete("/api/task/:id", async (req, res, next) => {
+app.delete("/api/task/:id", checkSignedIn, async (req, res, next) => {
     try {
         const statusMsg = await deleteTaskByID(req.params.id);
         res.status(200).json({message: "Task deleted", status: statusMsg});
@@ -47,13 +47,13 @@ app.delete("/api/task/:id", async (req, res, next) => {
     }
 });
 
-app.post("/api/task", async (req, res, next) => {
+app.post("/api/task", checkSignedIn, async (req, res, next) => {
     try {
         const task = {
             title: req.body.title,
             finished: req.body.finished,
             status: req.body.status,
-            listId: new ObjectId(req.body.listId)
+            listId: req.body.listId ? new ObjectId(req.body.listId) : undefined
         };
         await insertNewTask(task);
 
@@ -64,7 +64,7 @@ app.post("/api/task", async (req, res, next) => {
     }
 });
 
-app.put("/api/task/:id", async (req, res, next) => {
+app.put("/api/task/:id", checkSignedIn, async (req, res, next) => {
     try {
         let statusMsgs = []
         for (const key of Object.keys(req.body)) {
@@ -84,7 +84,7 @@ app.put("/api/task/:id", async (req, res, next) => {
 ##########################################
 */
 
-app.get("/api/lists", async (req, res, next) => {
+app.get("/api/lists", checkSignedIn, async (req, res, next) => {
     try {
         const lists = await getLists();
         res.status(200).json(lists);
@@ -94,7 +94,7 @@ app.get("/api/lists", async (req, res, next) => {
     }
 });
 
-app.delete("/api/list/:id", async (req, res, next) => {
+app.delete("/api/list/:id", checkSignedIn, async (req, res, next) => {
     try {
         const statusMsg = await deleteListByID(req.params.id);
         res.status(200).json({message: "List deleted", status: statusMsg});
@@ -104,7 +104,7 @@ app.delete("/api/list/:id", async (req, res, next) => {
     }
 });
 
-app.post("/api/list", async (req, res, next) => {
+app.post("/api/list", checkSignedIn, async (req, res, next) => {
     try {
         const list = {
             title: req.body.title
@@ -118,7 +118,7 @@ app.post("/api/list", async (req, res, next) => {
     }
 });
 
-app.put("/api/list/:id", async (req, res, next) => {
+app.put("/api/list/:id", checkSignedIn, async (req, res, next) => {
     try {
         let statusMsgs = []
         for (const key of Object.keys(req.body)) {
