@@ -4,6 +4,12 @@
       <h1>Taches</h1><br>
       <button class="btn btn-outline-secondary m-1" (click)="logout()">Logout</button>
     </div>
+    <div class="bd-highlight d-flex justify-content-center">
+      <div class="d-flex flex-row justify-content-center">
+        <input id="inputAjoutList" class="saisieInput" type="text" name="tache" placeholder="Titre de la liste" [(ngModel)]="newList.title">
+        <button id="buttonAjoutList" class="btn btn-primary" value="Ajouter" (click)="addTaskList()">Ajouter</button>
+      </div>
+    </div>
     <div class="row">
       <div class="col" *ngFor="let list of taskList">
         <taskList [list]=list></taskList>

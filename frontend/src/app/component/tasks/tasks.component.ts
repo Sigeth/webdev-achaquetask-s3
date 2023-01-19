@@ -19,6 +19,9 @@ export class TasksComponent implements OnInit{
     "en_cours",
     "termine"
   ];
+  newList: TaskList = {
+    title: ""
+  };
   error: boolean = false;
   taskList: Array<TaskList> = new Array<TaskList>();
 
@@ -28,9 +31,11 @@ export class TasksComponent implements OnInit{
       next: (tasks) => {
         this.taskListsService.getLists().subscribe({
           next: (lists) => {
-            this.taskList = lists;
             if (tasks.length != 0) {
               this.taskList.push({_id: "", title: "Pas trié"});
+            }
+            for (let l of lists) {
+              this.taskList.push(l);
             }
           },
           error: () => { this.error = true; }
@@ -38,6 +43,14 @@ export class TasksComponent implements OnInit{
       },
       error: () => { this.error = true; }
     });
+  }
+  addTaskList(): void {
+    this.taskListsService.addList(this.newList).subscribe({
+      next: (data) => {
+        this.taskList.push(data);
+        this.newList.title = "";
+      }
+    })
   }
   logout(): void {
     this.userService.logout().subscribe({
