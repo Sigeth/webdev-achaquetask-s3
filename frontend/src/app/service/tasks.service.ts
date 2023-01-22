@@ -11,8 +11,8 @@ export class TasksService {
 
   constructor(private http: HttpClient) { }
 
-  getTasks(): Observable<Array<Task>> {
-      return this.http.get<Array<Task>>(`${this.url}/tasks`, {withCredentials: true});
+  getTasks(listId: string | undefined): Observable<Array<Task>> {
+      return this.http.get<Array<Task>>(`${this.url}/tasks?listId=${listId ? listId : ""}`, {withCredentials: true});
   }
 
   addTask(task: Task): Observable<Task> {
