@@ -3,4 +3,5 @@ export interface Task {
   title: string;
   finished: boolean;
   status: string;
+  listId: string | undefined;
 }
