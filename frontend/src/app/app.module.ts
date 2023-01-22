@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { TaskFilterPipe } from './pipe/task-filter.pipe';
 import { TaskListComponent } from './component/taskList/taskList.component';
+import { RegisterComponent } from './component/register/register.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TaskListComponent } from './component/taskList/taskList.component';
     LoginComponent,
     TasksComponent,
     TaskFilterPipe,
-    TaskListComponent
+    TaskListComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
