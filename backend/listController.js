@@ -2,11 +2,11 @@ const { MongoClient, ObjectId } = require("mongodb");
 const dbUrl = "mongodb://127.0.0.1:27017";
 
 module.exports = {
-    async getLists() {
+    async getLists(user) {
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db("tasks");
 
-        return await dbo.collection("lists").find().toArray();
+        return await dbo.collection("lists").find({user:user}).toArray();
     },
     async addList(list) {
         const db = await MongoClient.connect(dbUrl);

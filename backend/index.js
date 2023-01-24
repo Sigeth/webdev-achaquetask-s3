@@ -16,9 +16,11 @@ app.use(session({
 }));
 
 function checkSignedIn(req, res, next) {
+    
     req.session.user
         ? next()
         : res.status(401).json({message: "Unauthorized"});
+    console.log(req.session);
 }
 
 /*
@@ -29,7 +31,7 @@ function checkSignedIn(req, res, next) {
 
 app.get("/api/tasks", checkSignedIn, async (req, res, next) => {
     try {
-        const tasks = await getTasks(req.query.listId);
+        const tasks = await getTasks(req.query.listId,req.session.user);
         res.status(200).json(tasks);
     } catch (e) {
         console.error(e);
@@ -53,7 +55,8 @@ app.post("/api/task", checkSignedIn, async (req, res, next) => {
             title: req.body.title,
             finished: req.body.finished,
             status: req.body.status,
-            listId: req.body.listId ? new ObjectId(req.body.listId) : undefined
+            listId: req.body.listId ? new ObjectId(req.body.listId) : undefined,
+            user: req.session.user
         };
         await insertNewTask(task);
 
@@ -86,7 +89,7 @@ app.put("/api/task/:id", checkSignedIn, async (req, res, next) => {
 
 app.get("/api/lists", checkSignedIn, async (req, res, next) => {
     try {
-        const lists = await getLists();
+        const lists = await getLists(req.session.user);
         res.status(200).json(lists);
     } catch (e) {
         console.error(e);
@@ -107,7 +110,8 @@ app.delete("/api/list/:id", checkSignedIn, async (req, res, next) => {
 app.post("/api/list", checkSignedIn, async (req, res, next) => {
     try {
         const list = {
-            title: req.body.title
+            title: req.body.title,
+            user:req.session.user
         };
         await addList(list);
 
@@ -197,4 +201,5 @@ app.get("/api/isConnected", checkSignedIn, (req, res, next) => {
 app.listen(port, () => {
     console.log(`app launched on port ${port}`);
 });
+
 
