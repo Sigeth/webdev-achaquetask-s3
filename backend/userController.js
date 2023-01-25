@@ -12,5 +12,11 @@ module.exports = {
         const db = await MongoClient.connect(dbUrl);
         const dbo = db.db("tasks");
         return await dbo.collection("users").find({login: user.login, password: user.password}).toArray();
+    },
+
+    async checkUser(user) {
+        const db = await MongoClient.connect(dbUrl);
+        const dbo = db.db("tasks");
+        return await dbo.collection("users").find({login: user}).toArray();
     }
 }

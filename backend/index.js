@@ -4,7 +4,7 @@ const session = require("express-session");
 const port = 3000;
 const { getTasks, deleteTaskByID, insertNewTask, updateTaskByID } = require("./taskController.js");
 const { getLists, deleteListByID, addList, updateListByID } = require("./listController");
-const { registerUser, findUser } = require("./userController.js");
+const { registerUser, findUser, checkUser } = require("./userController.js");
 const cors = require("cors");
 const { ObjectId } = require("mongodb");
 
@@ -148,14 +148,22 @@ app.post("/api/register", async (req, res, next) => {
             login: req.body.login,
             password: req.body.password
         };
-        const statusMsg = await registerUser(user);
-
-        res.status(200).json({message: "User registered", "user": user, status: statusMsg});
+        const chechUser = await checkUser(req.body.login);   
+        if(chechUser.length === 1) {
+            res.status(403).json({message: "Login already used"});
+            res.status(200).end()
+        } else { 
+            const statusMsg = await registerUser(user);
+            res.status(200).json({message: "User registered", "user": user, status: statusMsg});
+            res.status(200).end(); 
+        }
+        
     } catch (e) {
         console.error(e);
         res.status(500).json({code: 500, error: e.toString()});
     }
 });
+
 
 app.post("/api/login", async (req, res, next) => {
     try {
