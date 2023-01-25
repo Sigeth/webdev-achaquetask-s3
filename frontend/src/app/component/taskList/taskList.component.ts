@@ -3,6 +3,10 @@ import {Task} from "../../model/task";
 import {TasksService} from "../../service/tasks.service";
 import {TaskList} from "../../model/taskList";
 import {TaskListsService} from "../../service/lists.service";
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+
+
+
 @Component({
   selector: 'taskList',
   templateUrl: './taskList.component.html',
@@ -10,6 +14,7 @@ import {TaskListsService} from "../../service/lists.service";
 })
 export class TaskListComponent implements OnInit {
   @Input() list: TaskList | undefined;
+  @Input() tasklist: Array<TaskList> = new Array<TaskList>(); 
   tasks: Array<Task> = new Array<Task>();
   newTask: Task = {
     title: '',
@@ -61,4 +66,24 @@ export class TaskListComponent implements OnInit {
   private refreshTasks(): void {
     this.tasks = this.tasks.filter(currentTask => currentTask._id == currentTask._id);
   }
-}
+
+  drop(event: CdkDragDrop<any[]>){
+    console.log(event);
+    if(event.previousContainer == event.container) {
+    let save= this.tasks[event.currentIndex];
+    this.tasks[event.currentIndex] = this.tasks[event.previousIndex];
+    this.tasks[event.previousIndex]= save ;
+  
+    this.refreshTasks();
+
+    console.log(this.list?.title);
+    console.log(event.container.element);
+    }
+    else {
+      console.log(`omg les container : ${event.container} et ${event.previousContainer}`)
+console.log(this.tasks);
+   event.container.data.push(event.previousContainer.data[event.previousIndex]);
+  }
+  }
+  }
+ 
