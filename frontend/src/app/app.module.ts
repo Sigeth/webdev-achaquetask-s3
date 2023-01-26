@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+
+import {DragDropModule} from '@angular/cdk/drag-drop'; 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
 import { TasksComponent } from './component/tasks/tasks.component';
@@ -24,7 +26,8 @@ import { RegisterComponent } from './component/register/register.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]
