@@ -4,7 +4,7 @@ const session = require("express-session");
 const port = 3000;
 const { getTasks, deleteTaskByID, insertNewTask, updateTaskByID } = require("./taskController.js");
 const { getLists, deleteListByID, addList, updateListByID } = require("./listController");
-const { registerUser, findUser } = require("./userController.js");
+const { registerUser, findUser, checkUser } = require("./userController.js");
 const cors = require("cors");
 const { ObjectId } = require("mongodb");
 
@@ -16,9 +16,11 @@ app.use(session({
 }));
 
 function checkSignedIn(req, res, next) {
+    
     req.session.user
         ? next()
         : res.status(401).json({message: "Unauthorized"});
+    console.log(req.session);
 }
 
 /*
@@ -29,7 +31,7 @@ function checkSignedIn(req, res, next) {
 
 app.get("/api/tasks", checkSignedIn, async (req, res, next) => {
     try {
-        const tasks = await getTasks(req.query.listId);
+        const tasks = await getTasks(req.query.listId,req.session.user);
         res.status(200).json(tasks);
     } catch (e) {
         console.error(e);
@@ -53,7 +55,8 @@ app.post("/api/task", checkSignedIn, async (req, res, next) => {
             title: req.body.title,
             finished: req.body.finished,
             status: req.body.status,
-            listId: req.body.listId ? new ObjectId(req.body.listId) : undefined
+            listId: req.body.listId ? new ObjectId(req.body.listId) : undefined,
+            user: req.session.user
         };
         await insertNewTask(task);
 
@@ -86,7 +89,7 @@ app.put("/api/task/:id", checkSignedIn, async (req, res, next) => {
 
 app.get("/api/lists", checkSignedIn, async (req, res, next) => {
     try {
-        const lists = await getLists();
+        const lists = await getLists(req.session.user);
         res.status(200).json(lists);
     } catch (e) {
         console.error(e);
@@ -107,7 +110,8 @@ app.delete("/api/list/:id", checkSignedIn, async (req, res, next) => {
 app.post("/api/list", checkSignedIn, async (req, res, next) => {
     try {
         const list = {
-            title: req.body.title
+            title: req.body.title,
+            user:req.session.user
         };
         await addList(list);
 
@@ -144,14 +148,22 @@ app.post("/api/register", async (req, res, next) => {
             login: req.body.login,
             password: req.body.password
         };
-        const statusMsg = await registerUser(user);
-
-        res.status(200).json({message: "User registered", "user": user, status: statusMsg});
+        const chechUser = await checkUser(req.body.login);   
+        if(chechUser.length === 1) {
+            res.status(403).json({message: "Login already used"});
+            res.status(200).end()
+        } else { 
+            const statusMsg = await registerUser(user);
+            res.status(200).json({message: "User registered", "user": user, status: statusMsg});
+            res.status(200).end(); 
+        }
+        
     } catch (e) {
         console.error(e);
         res.status(500).json({code: 500, error: e.toString()});
     }
 });
+
 
 app.post("/api/login", async (req, res, next) => {
     try {
@@ -197,4 +209,5 @@ app.get("/api/isConnected", checkSignedIn, (req, res, next) => {
 app.listen(port, () => {
     console.log(`app launched on port ${port}`);
 });
+
 
