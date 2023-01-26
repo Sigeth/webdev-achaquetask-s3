@@ -68,28 +68,18 @@ export class TaskListComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<any[]>){
-    console.log(event);
     if(event.previousContainer == event.container) {
-    let save= this.tasks[event.currentIndex];
-    this.tasks[event.currentIndex] = this.tasks[event.previousIndex];
-    this.tasks[event.previousIndex]= save ;
-  
-    this.refreshTasks();
-
-    console.log(this.list?.title);
-    console.log(event.container.element);
+      let save= this.tasks[event.currentIndex];
+      this.tasks[event.currentIndex] = this.tasks[event.previousIndex];
+      this.tasks[event.previousIndex]= save ;
+      this.refreshTasks();
     }
     else {
-      console.log(`omg les container : ${event.container} et ${event.previousContainer}`)
-      console.log(this.tasks);
-      event.container.data.push(event.previousContainer.data[event.previousIndex]);
-  console.log(event.previousContainer.data);
-
-   event.previousContainer.data.filter(curentTask => curentTask._id != event.previousContainer.data[event.previousIndex]._id);
-   this.changeListId(event.previousContainer.data[event.previousIndex],event.container.id)
-  
-  }
-
+      event.container.data.splice(event.currentIndex,0,event.previousContainer.data[event.previousIndex]);
+      event.previousContainer.data.filter(curentTask => curentTask._id != event.previousContainer.data[event.previousIndex]._id);
+      this.changeListId(event.previousContainer.data[event.previousIndex],event.container.id)
+      //window.location.reload()
+    }
   }
 
 
