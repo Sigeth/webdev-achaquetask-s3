@@ -81,9 +81,28 @@ export class TaskListComponent implements OnInit {
     }
     else {
       console.log(`omg les container : ${event.container} et ${event.previousContainer}`)
-console.log(this.tasks);
-   event.container.data.push(event.previousContainer.data[event.previousIndex]);
+      console.log(this.tasks);
+      event.container.data.push(event.previousContainer.data[event.previousIndex]);
+  console.log(event.previousContainer.data);
+
+   event.previousContainer.data.filter(curentTask => curentTask._id != event.previousContainer.data[event.previousIndex]._id);
+   this.changeListId(event.previousContainer.data[event.previousIndex],event.container.id)
+  
   }
+
   }
+
+
+  changeListId(task:Task,listId:string){
+    const modifiedTask: Task = {
+      title: task.title,
+      finished: task.finished,
+      status: task.status,
+      listId: listId
+    };
+    this.taskService.updateTask(task, modifiedTask).subscribe({
+      next: () => { console.log("ok"); }
+    });
   }
+}
  
